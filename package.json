@@ -1,0 +1,57 @@
+{
+  "name": "@cesarbr/knot-cloud-sdk-js-storage",
+  "version": "0.1.0",
+  "description": "KNoT Cloud Storage library for NodeJS and browser",
+  "contributors": [
+    "Thiago Cardoso <thiago.figuerdo@cesar.org.br>",
+    "Paulo Serra Filho <ptvsf@cesar.org.br>",
+    "Ramon Ribeiro <rhpr@cesar.org.br>",
+    "Joao Alexandre Neto <joao.alexandre@cesar.org.br>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CESARBR/knot-cloud-sdk-js-storage.git"
+  },
+  "author": "CESARBR",
+  "license": "MIT",
+  "main": "./dist/main.js",
+  "module": "./dist/module.mjs",
+  "browser": "./dist/browser.js",
+  "scripts": {
+    "lint": "eslint .",
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.3",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-import-resolver-babel-module": "^5.0.1",
+    "eslint-plugin-import": "^2.16.0",
+    "nodemon": "^1.18.11",
+    "pre-commit": "^1.2.2",
+    "rollup": "^1.13.1",
+    "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "pre-commit": [
+    "lint"
+  ]
+}
