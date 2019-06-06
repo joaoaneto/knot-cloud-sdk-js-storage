@@ -1,5 +1,7 @@
 import axios from 'axios';
 import url from 'url';
+import httpSignature from 'http-signature';
+import uuid from 'uuid';
 
 function throwError(message) {
   const error = new Error(message);
@@ -35,9 +37,72 @@ function buildUri(protocol, hostname, port, pathname, query) {
   });
 }
 
+function mapDataToStorage(data) {
+  return {
+    devices: ['*'],
+    topic: 'data',
+    payload: data,
+  };
+}
+
+function createRoute(id) {
+  const route = [
+    {
+      from: id,
+      to: uuid.v4,
+      type: 'broadcast.sent',
+    },
+  ];
+
+  return JSON.stringify(route);
+}
+
+function generateSignatureHeaders(privateKey) {
+  const signer = httpSignature.createSigner({
+    keyId: 'knot-cloud-storage-sdk',
+    key: Buffer.from(privateKey, 'base64').toString('ascii'),
+    algorithm: 'rsa-sha256',
+  });
+  const date = signer.writeDateHeader();
+
+  return new Promise((resolve, reject) => {
+    signer.sign(async (err, authz) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const headers = {
+        authorization: authz,
+        date: date.toString(),
+      };
+
+      resolve(headers);
+    });
+  });
+}
+
 class Storage {
   constructor(options) {
     this.options = extractSettings(options);
+  }
+
+  async saveData(privateKey, id, data) {
+    if (!privateKey) {
+      throwError('A base64 privateKey should be provided');
+    }
+
+    const headers = await generateSignatureHeaders(privateKey);
+    headers['x-meshblu-route'] = createRoute(id);
+
+    const uri = buildUri(
+      this.options.protocol,
+      this.options.hostname,
+      this.options.port,
+      '/data',
+    );
+
+    await axios.post(uri, mapDataToStorage(data), { headers });
   }
 
   async listData(query) {

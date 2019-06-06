@@ -1,6 +1,8 @@
 import chai from 'chai';
 import spies from 'chai-spies';
 import nock from 'nock';
+import fs from 'fs';
+import _ from 'lodash';
 import chaiAsPromised from 'chai-as-promised';
 
 import Storage from 'Storage';
@@ -245,6 +247,76 @@ describe('Storage', () => {
 
           try {
             await storage.listDataBySensor(deviceId, sensorId);
+          } catch (err) {
+            expect(err).to.be.an.instanceof(Error);
+          }
+      });
+    });
+  });
+
+  describe('saveData', () => {
+    const privateKey = fs.readFileSync('./test/randomBase64PrivateKey.txt', 'ascii');
+    const deviceId = '3ae370d0-bcba-4aae-86a7-8a2fd2714cef';
+    const data = {
+      sensorId: 1,
+      value: false,
+    };
+
+    describe('when privateKey isn\'t provided', async () => {
+      it('should throw an exception', async () => {
+        const storage = new Storage(settings);
+        expect(storage.saveData(null, deviceId, data))
+          .to.eventually.be.rejected;
+      });
+    });
+
+    describe('when deviceId isn\'t provided', () => {
+      it('should throw an exception', async () => {
+        const storage = new Storage(settings);
+        expect(storage.saveData(privateKey, null, data))
+          .to.eventually.be.rejected;
+      });
+    });
+
+    describe('when data isn\'t provided', () => {
+      it('should throw an exception', async () => {
+        const storage = new Storage(settings);
+        expect(storage.saveData(privateKey, deviceId))
+          .to.eventually.be.rejected;
+      });
+    });
+
+    describe('when successful called', () => {
+      it('should create a valid request', async () => {
+        const storage = new Storage(settings);
+        const expectedRouteHeader = [{ from: deviceId, type: 'broadcast.sent' }];
+        const expectedBody = {
+          devices: ['*'],
+          topic: 'data',
+          payload: data,
+        };
+
+        nock(url)
+        .matchHeader('x-meshblu-route', (header) => _.isEqual(JSON.parse(header), expectedRouteHeader))
+        .matchHeader('Authorization', (header) => header) // only verify if exists
+        .post(`/data`, expectedBody)
+        .reply(200);
+
+        await storage.saveData(privateKey, deviceId, data);
+
+        // nock library validates the request by intercepting NodeJS HTTP request and verifying its properties
+      });
+    });
+
+    describe('when an error happens', () => {
+      it('should pass error to client', async () => {
+          const storage = new Storage(settings);
+          nock(url)
+          .post(`/data`)
+          .reply(500);
+
+          try {
+            await storage.saveData(privateKey, deviceId, data);
           } catch (err) {
             expect(err).to.be.an.instanceof(Error);
           }

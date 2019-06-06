@@ -51,6 +51,33 @@ const client = new KNoTCloudStorage({
 });
 ```
 
+## saveData(privateKey, deviceId, data): &lt;Void&gt;
+
+Save device data message to storage. This method can be used to test if the storage service is saving data properly.
+
+### Arguments
+  - `privateKey` **String** Base64 private key (it can be the same you've used to deploy the cloud).
+  - `deviceId` **String** Device ID (UUID format version).
+  - `data` **String** Data to be saved, formed by:
+    * `sensorId` **Number** Sensor ID.
+    * `value` **String|Boolean|Number** Sensor value. String must be Base64 encoded.
+
+### Example
+
+```javascript
+const KNoTCloudStorage = require('@cesarbr/knot-cloud-sdk-js-storage');
+const client = new KNoTCloudStorage({
+  protocol: 'https',
+  hostname: 'data.knot.cloud',
+  id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
+  token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
+});
+
+const privateKey = 'base64-valid-private-key';
+
+client.saveData(privateKey, '3ae370d0-bcba-4aae-86a7-8a2fd2714cef', { sensorId: 1, value: true });
+```
+
 ## listData(query): &lt;Array&gt;
 
 Get all the device data messages.
