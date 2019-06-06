@@ -56,6 +56,27 @@ class Storage {
     const response = await axios.get(uri, { headers });
     return response.data;
   }
+
+  async listDataByDevice(id, query) {
+    if (!id) {
+      throwError('A device ID should be provided');
+    }
+
+    const uri = buildUri(
+      this.options.protocol,
+      this.options.hostname,
+      this.options.port,
+      `/data/${id}`,
+      query,
+    );
+    const headers = {
+      auth_id: this.options.id,
+      auth_token: this.options.token,
+    };
+
+    const response = await axios.get(uri, { headers });
+    return response.data;
+  }
 }
 
 export default Storage;
