@@ -139,3 +139,44 @@ console.log(data);
 //   timestamp: '2019-03-18T12:48:05.569Z',
 // }]
 ```
+
+## listDataBySensor(deviceId, sensorId, query): &lt;Array&gt;
+
+Get the messages sent by a specific device's sensor.
+
+### Arguments
+- `deviceId` **String** Device ID.
+- `sensorId` **Number** Sensor ID.
+- `query` **Object** Optional properties used to filter data.
+  * `orderBy` **String** The field used to order.
+  * `order` **Number** Ascending (1) or descending (2) order, default=0.
+  * `skip` **Number** The number of data to skip (returns skip + 1), default=0.
+  * `take` **Number** The maximum number of data that you want from skip + 1 (the number is limited to 100), default=10.
+  * `startDate` **String** The start date that you want your set of data (format=YYYY-MM-DD HH:MM:SS).
+  * `endDate` **String** The finish date that you want your set of data (format=YYYY-MM-DD HH:MM:SS).
+
+### Result
+- `messages` **Array** JSON object containing device's sensor data messages.
+
+### Example
+
+```javascript
+const KNoTCloudStorage = require('@cesarbr/knot-cloud-sdk-js-storage');
+const client = new KNoTCloudStorage({
+  protocol: 'https',
+  hostname: 'data.knot.cloud',
+  id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
+  token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
+});
+
+client.listDataBySensor('cc5429a29afcd158', 1);
+
+// [{
+//   from: '188824f0-28c4-475b-ab36-2505402bebcb',
+//   payload: {
+//       sensorId: 1,
+//       value: true,
+//   },
+//   timestamp: '2019-07-04T02:37:45.365Z',
+// }]
+```

@@ -77,6 +77,27 @@ class Storage {
     const response = await axios.get(uri, { headers });
     return response.data;
   }
+
+  async listDataBySensor(deviceId, sensorId, query) {
+    if (!deviceId || sensorId === undefined) {
+      throwError('Both device ID and sensor ID should be provided');
+    }
+
+    const uri = buildUri(
+      this.options.protocol,
+      this.options.hostname,
+      this.options.port,
+      `/data/${deviceId}/sensor/${sensorId}`,
+      query,
+    );
+    const headers = {
+      auth_id: this.options.id,
+      auth_token: this.options.token,
+    };
+
+    const response = await axios.get(uri, { headers });
+    return response.data;
+  }
 }
 
 export default Storage;
