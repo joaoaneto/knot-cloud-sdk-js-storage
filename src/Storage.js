@@ -66,7 +66,7 @@ class Storage {
       this.options.protocol,
       this.options.hostname,
       this.options.port,
-      `/data/${id}`,
+      `${this.options.pathname}/data/${id}`,
       query,
     );
     const headers = {
@@ -87,7 +87,7 @@ class Storage {
       this.options.protocol,
       this.options.hostname,
       this.options.port,
-      `/data/${deviceId}/sensor/${sensorId}`,
+      `${this.options.pathname}/data/${deviceId}/sensor/${sensorId}`,
       query,
     );
     const headers = {

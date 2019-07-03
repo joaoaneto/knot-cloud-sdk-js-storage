@@ -10,11 +10,18 @@ chai.use(chaiAsPromised);
 chai.use(spies);
 const expect = chai.expect;
 
-const settings = { hostname: 'data.knot.cloud', id: '5770d58c-a25c-40bc-ac1d-8613002be539', token: 'cff126c40a47438a33e8451c87a4199fddbdbb40', protocol: 'https' };
+const settings = {
+  hostname: 'data.knot.cloud',
+  protocol: 'https',
+  pathname: '/api',
+  id: '5770d58c-a25c-40bc-ac1d-8613002be539',
+  token: 'cff126c40a47438a33e8451c87a4199fddbdbb40',
+};
 const url = 'https://data.knot.cloud:443';
+const pathname = '/api';
 
 function mockRequest({ endpoint, query, responseCode, responseBody }) {
-  nock(url)
+  nock(`${url}${pathname}`)
   .get(endpoint)
   .query(query)
   .reply(responseCode, responseBody);
