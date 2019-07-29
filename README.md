@@ -71,14 +71,26 @@ Get all the device data messages.
 
 ```javascript
 const KNoTCloudStorage = require('@cesarbr/knot-cloud-sdk-js-storage');
-const client = new KNoTCloudStorage({
-  protocol: 'https',
-  hostname: 'data.knot.cloud',
-  id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
-  token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
-});
 
-client.listData();
+async function main() {
+    const client = new KNoTCloudStorage({
+      protocol: 'https',
+      hostname: 'data.knot.cloud',
+      id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
+      token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
+    });
+
+    try {
+      console.log(await client.listData());
+    } catch (err) {
+      if (err.response) {
+        console.error(err.response.data.message);
+        return;
+      }
+      console.error(err);
+    }
+}
+main();
 
 // [{
 //   from: '188824f0-28c4-475b-ab36-2505402bebcb',
@@ -120,24 +132,36 @@ Get the messages sent by a specific device.
 
 ```javascript
 const KNoTCloudStorage = require('@cesarbr/knot-cloud-sdk-js-storage');
-const client = new KNoTCloudStorage({
-  protocol: 'https',
-  hostname: 'data.knot.cloud',
-  id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
-  token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
-});
 
-const data = client.listDataById('cc5429a29afcd158');
-console.log(data);
+async function main() {
+    const client = new KNoTCloudStorage({
+      protocol: 'https',
+      hostname: 'data.knot.cloud',
+      id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
+      token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
+    });
 
-// [{
-//   from: '188824f0-28c4-475b-ab36-2505402bebcb',
-//   payload: {
-//       sensorId: 2,
-//       value: 234,
-//   },
-//   timestamp: '2019-03-18T12:48:05.569Z',
-// }]
+    try {
+      console.log(await client.listDataByDevice('4dd0db709e111465'));
+    } catch (err) {
+      if (err.response) {
+        console.error(err.response.data.message);
+        return;
+      }
+      console.error(err);
+    }
+}
+main();
+
+// [ { from: '4dd0db709e111465',
+//     payload: { sensorId: 1, value: true },
+//     timestamp: '2019-06-06T20:58:55.112Z' },
+//   { from: '4dd0db709e111465',
+//     payload: { sensorId: 1, value: true },
+//     timestamp: '2019-06-12T15:54:54.762Z' },
+//   { from: '4dd0db709e111465',
+//     payload: { sensorId: 1, value: true },
+//     timestamp: '2019-06-13T16:47:57.280Z' } ]
 ```
 
 ## listDataBySensor(deviceId, sensorId, query): &lt;Array&gt;
@@ -162,21 +186,34 @@ Get the messages sent by a specific device's sensor.
 
 ```javascript
 const KNoTCloudStorage = require('@cesarbr/knot-cloud-sdk-js-storage');
-const client = new KNoTCloudStorage({
-  protocol: 'https',
-  hostname: 'data.knot.cloud',
-  id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
-  token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
-});
 
-client.listDataBySensor('cc5429a29afcd158', 1);
+async function main() {
+    const client = new KNoTCloudStorage({
+      protocol: 'https',
+      hostname: 'data.knot.cloud',
+      id: 'b1a1bd58-c3ef-4cb5-82cd-3a2e0b38dd21',
+      token: '3185a6c9d64915f6b468ee8043df4af5f08e1933',
+    });
 
-// [{
-//   from: '188824f0-28c4-475b-ab36-2505402bebcb',
-//   payload: {
-//       sensorId: 1,
-//       value: true,
-//   },
-//   timestamp: '2019-07-04T02:37:45.365Z',
-// }]
+    try {
+      console.log(await client.listDataBySensor('4dd0db709e111465', 1));
+    } catch (err) {
+      if (err.response) {
+        console.error(err.response.data.message);
+        return;
+      }
+      console.error(err);
+    }
+}
+main();
+
+// [ { from: '4dd0db709e111465',
+//     payload: { sensorId: 1, value: true },
+//     timestamp: '2019-06-06T20:58:55.112Z' },
+//   { from: '4dd0db709e111465',
+//     payload: { sensorId: 1, value: true },
+//     timestamp: '2019-06-12T15:54:54.762Z' },
+//   { from: '4dd0db709e111465',
+//     payload: { sensorId: 1, value: true },
+//     timestamp: '2019-06-13T16:47:57.280Z' } ]
 ```
