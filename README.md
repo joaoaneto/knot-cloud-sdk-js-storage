@@ -58,7 +58,7 @@ Get all the device data messages.
 ### Arguments
 - `query` **Object** Optional properties used to filter data.
   * `orderBy` **String** The field used to order.
-  * `order` **Number** Ascending (1) or descending (2) order, default=0.
+  * `order` **Number** Ascending (1) or descending (-1) order, default=1.
   * `skip` **Number** The number of data to skip (returns skip + 1), default=0.
   * `take` **Number** The maximum number of data that you want from skip + 1 (the number is limited to 100), default=10.
   * `startDate` **String** The start date that you want your set of data (format=YYYY-MM-DD HH:MM:SS).
@@ -118,7 +118,7 @@ Get the messages sent by a specific device.
 - `id` **String** Device ID.
 - `query` **Object** Optional properties used to filter data.
   * `orderBy` **String** The field used to order.
-  * `order` **Number** Ascending (1) or descending (2) order, default=0.
+  * `order` **Number** Ascending (1) or descending (-1) order, default=1.
   * `skip` **Number** The number of data to skip (returns skip + 1), default=0.
   * `take` **Number** The maximum number of data that you want from skip + 1 (the number is limited to 100), default=10.
   * `startDate` **String** The start date that you want your set of data (format=YYYY-MM-DD HH:MM:SS).
@@ -173,7 +173,7 @@ Get the messages sent by a specific device's sensor.
 - `sensorId` **Number** Sensor ID.
 - `query` **Object** Optional properties used to filter data.
   * `orderBy` **String** The field used to order.
-  * `order` **Number** Ascending (1) or descending (2) order, default=0.
+  * `order` **Number** Ascending (1) or descending (-1) order, default=1.
   * `skip` **Number** The number of data to skip (returns skip + 1), default=0.
   * `take` **Number** The maximum number of data that you want from skip + 1 (the number is limited to 100), default=10.
   * `startDate` **String** The start date that you want your set of data (format=YYYY-MM-DD HH:MM:SS).
