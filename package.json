@@ -1,6 +1,6 @@
 {
   "name": "@cesarbr/knot-cloud-sdk-js-storage",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "KNoT Cloud Storage library for NodeJS and browser",
   "contributors": [
     "Thiago Cardoso <thiago.figuerdo@cesar.org.br>",
